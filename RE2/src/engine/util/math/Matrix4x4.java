@@ -121,8 +121,6 @@ public class Matrix4x4 {
 	
 	}
 	
-
-	
 	public void set(int x,int y,float data){
 		this.data[x][y] =data;
 	}
