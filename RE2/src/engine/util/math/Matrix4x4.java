@@ -110,8 +110,18 @@ public class Matrix4x4 {
 	
 	
 	public void rotate(Vector3 f,Vector3 up){
+		f.normailze();
+		up.normailze();
+		Vector3 right = f.cross(up);
+		up = f.cross(right);
 		
+		data[0][0] = right.	x; 	data[1][0] = right.	y; 	data[2][0] = right.	z;
+		data[0][1] = up.	x; 	data[1][1] = up.	y; 	data[2][1] = up.	z;
+		data[0][2] = f.		x; 	data[1][2] = f.		y; 	data[2][2] = f.		z;
+	
 	}
+	
+
 	
 	public void set(int x,int y,float data){
 		this.data[x][y] =data;
@@ -155,5 +165,14 @@ public class Matrix4x4 {
 		return data;
 	}
 	
+	@Override
+	public String toString() {
+		
+		return super.toString()+"\n"
+				+ "/ " + 	data[0][0] +  ",\t" + 	data[1][0] + ",\t" + data[2][0] + ",\t" + data[3][0] + "\t\\\n"
+				+ "| " + 	data[0][1] +  ",\t" + 	data[1][1] + ",\t" + data[2][1] + ",\t" + data[3][1] + "\t|\n"
+				+ "| " + 	data[0][2] +  ",\t" +	data[1][2] + ",\t" + data[2][2] + ",\t" + data[3][2] + "\t|\n"
+				+ "\\ " + 	data[0][3] + ",\t" + 	data[1][3] + ",\t" + data[2][3] + ",\t" + data[3][3] + "\t/\n";
+	}
 	
 }
