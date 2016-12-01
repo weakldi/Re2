@@ -62,13 +62,15 @@ public final class Renderengine implements Runnable{
                 // Right top triangle
                 2, 3, 0
 		});
+		Shader s = new Shader(FileLoader.loadFile("res/shader/test.v"),FileLoader.loadFile("res/shader/test.f"));
 		while(!w.shouldClose()){
 			w.clear();
 			render();
+			s.bind();
 			v.bind();
-			GL11.glColor3f(1, 1, 1);
 			v.drawE();
 			v.unbind();
+			Shader.unbind();
 			w.swapBuffers();
 			w.pollEvents();
 		}
