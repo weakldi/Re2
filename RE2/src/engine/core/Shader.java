@@ -21,10 +21,9 @@ public class Shader {
 		glLinkProgram(programID);
 		if(glGetProgrami(programID,GL_LINK_STATUS)==0){
 			System.out.println("ERROR " + glGetProgramInfoLog(programID, 1000));
-			
 			System.exit(-1);
 		}
-		//TODO Fehlerüberprüfung beim lineken.
+		
 	}
 	
 	private int loadShaderProgram(String data, int type){
