@@ -3,8 +3,14 @@ package engine.util.math;
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
+
+import engine.core.UniformValue;
+
+import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL32.*;
+
 import static java.lang.Math.*;
-public class Matrix4x4 {
+public class Matrix4x4 implements UniformValue{
 	private float[][] data = new float[4][4];
 	
 	public Matrix4x4 setNull(){
@@ -171,6 +177,11 @@ public class Matrix4x4 {
 				+ "| " + 	data[0][1] +  ",\t" + 	data[1][1] + ",\t" + data[2][1] + ",\t" + data[3][1] + "\t|\n"
 				+ "| " + 	data[0][2] +  ",\t" +	data[1][2] + ",\t" + data[2][2] + ",\t" + data[3][2] + "\t|\n"
 				+ "\\ " + 	data[0][3] + ",\t" + 	data[1][3] + ",\t" + data[2][3] + ",\t" + data[3][3] + "\t/\n";
+	}
+
+	@Override
+	public void loadValueToUniform(int uniformID) {
+		glUniformMatrix4fv(uniformID, true, getFloatBuffer());
 	}
 	
 }

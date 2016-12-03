@@ -1,6 +1,10 @@
 package engine.util.math;
 
-public class Vector3 {
+import org.lwjgl.opengl.GL20;
+
+import engine.core.UniformValue;
+
+public class Vector3 implements UniformValue{
 	float x,y,z;
 	
 	
@@ -79,6 +83,11 @@ public class Vector3 {
 		x-=b.x;
 		y-=b.y;
 		z-=b.z;
+	}
+
+	@Override
+	public void loadValueToUniform(int uniformID) {
+		GL20.glUniform3f(uniformID, x, y, z);
 	}
 	
 }

@@ -1,6 +1,10 @@
 package engine.util.math;
 
-public class Vector4 {
+import org.lwjgl.opengl.GL20;
+
+import engine.core.UniformValue;
+
+public class Vector4 implements UniformValue{
 	float x,y,z,w;
 
 	public Vector4() {
@@ -82,6 +86,11 @@ public class Vector4 {
 
 	public void setZ(float z) {
 		this.z = z;
+	}
+
+	@Override
+	public void loadValueToUniform(int uniformID) {
+		GL20.glUniform4f(uniformID, x, y, z, w);
 	}
 	
 }
