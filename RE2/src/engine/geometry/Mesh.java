@@ -1,15 +1,12 @@
 package engine.geometry;
 
 import java.nio.FloatBuffer;
-import java.util.ArrayList;
 
-import engine.core.RenderbleObject;
 import engine.core.Renderengine;
-import engine.core.Shader;
 import engine.util.math.Vector2;
 import engine.util.math.Vector3;
 
-import  static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL15.*;
@@ -22,12 +19,10 @@ public class Mesh {
 	private final int ID;
 	private static int nextID = 0;
 	
-	private ArrayList<RenderbleObject> objects;
+	
 
-	public Mesh(int[] indexData,Vertex[] data) {
+	public Mesh(Vertex[] data,int[] indexData) {
 		super();
-		vertexArrayObject = new VAO();
-		objects = new ArrayList<>();
 		ID = nextID ++;
 		this.data = data;
 		float[] posData = new float[data.length*3];
@@ -54,14 +49,8 @@ public class Mesh {
 		Renderengine.getInstance().getMeshes().put(ID, this);
 	}
 	
-	public void render(Shader shader){
-		vertexArrayObject.bind();
-		for (RenderbleObject renderbleObject : objects) {
-			renderbleObject.prepare(shader);
-			renderbleObject.render(shader);
-			vertexArrayObject.drawE();
-		}
-		vertexArrayObject.unbind();
+	public void render(){
+		
 	}
 
 	public Vertex[] getData() {
@@ -77,10 +66,6 @@ public class Mesh {
 		vertexArrayObject = null;
 	}
 	
-	public ArrayList<RenderbleObject> getObjects() {
-		return objects;
-	}
-
 	public int getID() {
 		return ID;
 	}
