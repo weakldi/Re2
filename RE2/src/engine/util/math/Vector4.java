@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL20;
 import engine.core.UniformValue;
 
 public class Vector4 implements UniformValue{
-	float x,y,z,w;
+	public float x,y,z,w;
 
 	public Vector4() {
 		super();

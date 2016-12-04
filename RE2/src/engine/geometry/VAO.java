@@ -2,7 +2,6 @@ package engine.geometry;
 
 
 import  static org.lwjgl.opengl.GL11.*;
-
 import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL15.*;
@@ -36,10 +35,12 @@ public class VAO {
 	}
 	
 	public void addDataStatic(int attrib,int size, float[] data){
+		
 		if(attrib>=0&&attrib<16)
 		if(vbos[attrib]==0){
 			bind();
 			vbos[attrib] = glGenBuffers();
+			System.out.println(vbos[attrib]);
 			glBindBuffer(GL_ARRAY_BUFFER, vbos[attrib]);
 			glBufferData(GL_ARRAY_BUFFER, data, GL_STATIC_DRAW);
 			glVertexAttribPointer(attrib, size, GL_FLOAT, false, 0, 0L);

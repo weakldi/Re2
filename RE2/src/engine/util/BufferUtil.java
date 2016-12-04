@@ -13,9 +13,10 @@ public class BufferUtil {
 		return buffer;
 	}
 	
-	public static IntBuffer createFilpedFloatbuffer(int ... data){
+	public static IntBuffer createFilpedIntbuffer(int ... data){
 		IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
 		buffer.put(data).flip();
 		return buffer;
 	}
+
 }

@@ -1,15 +1,11 @@
 package engine.core;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.*;
-import static org.lwjgl.opengl.GL40.*;
 
-import java.util.ArrayList;
+import static org.lwjgl.opengl.GL11.GL_FALSE;
+import static org.lwjgl.opengl.GL11.GL_NONE;
+import static org.lwjgl.opengl.GL20.*;
+
 import java.util.HashMap;
 import java.util.Set;
-
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL12.*;
-import static org.lwjgl.opengl.GL15.*;
 
 public class Shader {
 	private final int programID;
@@ -17,7 +13,10 @@ public class Shader {
 	private int fID;
 	private HashMap<String, Integer> uniformNames; 
 	private HashMap<Integer, UniformValue> uniforms;
+	
 	public Shader(String vertex,String fragment){
+		uniforms = new HashMap<>();
+		uniformNames = new HashMap<>();
 		programID = glCreateProgram();
 		vID = loadShaderProgram(vertex, GL_VERTEX_SHADER);
 		fID = loadShaderProgram(fragment, GL_FRAGMENT_SHADER);
@@ -26,12 +25,13 @@ public class Shader {
 		glAttachShader(programID, fID);
 		
 		glLinkProgram(programID);
+		getUniforms(vertex);
+		getUniforms(fragment);
 		if(glGetProgrami(programID,GL_LINK_STATUS)==0){
 			System.out.println("ERROR " + glGetProgramInfoLog(programID, 1000));
 			System.exit(-1);
 		}
-		uniforms = new HashMap<>();
-		uniformNames = new HashMap<>();
+		
 	}
 	
 	private int loadShaderProgram(String data, int type){
@@ -44,17 +44,20 @@ public class Shader {
 			{
 				throw new IllegalStateException("compilation error " + glGetShaderInfoLog(shaderID, 1000));
 			}
-			getUniforms(data);
+			
 			return shaderID;
 		}
 		return 0;
 	}
 	
 	private void getUniforms(String data){
-		String[] liens = data.split("\n");
+		String[] liens = data.replaceAll("[\n\r]{1,}", "").split(";");
 		for (String l : liens) {
-			if(l.startsWith("uniform")){
-				String uName = l.split("\\s*")[2].replaceAll(";", "");
+			System.out.println("L: " + l);
+			l = l.replaceAll("[\n\r]{1,}", "");
+			if(l.matches("\\s*uniform.*")){
+				String uName = l.split("\\s{1,}")[2].replaceAll(";", "");
+				System.out.println("Uniform " + uName);
 				uniformNames.put(uName,glGetUniformLocation(programID, uName));
 			}
 		}
@@ -62,6 +65,7 @@ public class Shader {
 	
 	public void addUniformValue(String uniformName,UniformValue v){
 		if(uniformNames.containsKey(uniformName)){
+			System.out.println(uniformName + " " + uniformNames.get(uniformName));
 			uniforms.put(uniformNames.get(uniformName), v);
 		}
 	}

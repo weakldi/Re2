@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL20;
 import engine.core.UniformValue;
 
 public class Vector3 implements UniformValue{
-	float x,y,z;
+	public float x,y,z;
 	
 	
 	
@@ -18,6 +18,12 @@ public class Vector3 implements UniformValue{
 		this.x = x;
 		this.y = y;
 		this.z = z;
+	}
+	
+	public void setNull(){
+		x = 0;
+		y = 0;
+		z = 0;
 	}
 
 	public float getX() {
@@ -67,16 +73,17 @@ public class Vector3 implements UniformValue{
 	
 	public Vector3 cross(Vector3 b){
 		Vector3 rV = new Vector3();
-		rV.x = (y*b.z)-(z*b.y);
-		rV.y = (z*b.x)-(x*b.z);
-		rV.z = (x*b.y)-(y*b.x);
-		return rV;
-	}
-	
-	public void add(Vector3 b){
+		rV.x = (y*b.z)-(z*b.y);     //y*z-z*y
+		rV.y = (z*b.x)-(x*b.z);		//z*x-x*z		
+		rV.z = (x*b.y)-(y*b.x);		//x*y-y*x		
+		return rV;                   	
+	}                              
+	                               
+	public Vector3 add(Vector3 b){
 		x+=b.x;
 		y+=b.y;
 		z+=b.z;
+		return this;
 	}
 	
 	public void sub(Vector3 b){
@@ -88,6 +95,12 @@ public class Vector3 implements UniformValue{
 	@Override
 	public void loadValueToUniform(int uniformID) {
 		GL20.glUniform3f(uniformID, x, y, z);
+	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return super.toString() + " [" + x + ", " + y + ", " + z + "]";
 	}
 	
 }
