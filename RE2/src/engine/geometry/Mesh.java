@@ -6,7 +6,7 @@ import engine.core.Renderengine;
 import engine.util.math.Vector2;
 import engine.util.math.Vector3;
 
-import  static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL15.*;
