@@ -12,12 +12,10 @@ public class Main {
 		Renderengine re = Renderengine.getInstance();
 		
 		re.start();
-		Vector3 b = new Vector3(1, 1, 0);
-		b.normailze();
-		Vector3 v = b.cross(new Vector3(0, 0, 1));
-		v.normailze();
+		Vector3 pos = new Vector3(0, 0, 10);
+		Vector3 rot = new Vector3(0, 30, 0);
+		Vector3 scale = new Vector3(1, 1, 0.5f);
+		System.out.println(new Matrix4x4().setIdentity().translate(pos).rotate(rot).scale(scale));
 	
 	}
 }
-
-//rotate 0 um y 

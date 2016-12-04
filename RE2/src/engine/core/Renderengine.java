@@ -6,8 +6,12 @@ import java.util.Set;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLCapabilities;
 
+import engine.geometry.Cube;
 import engine.geometry.Mesh;
+import engine.geometry.Quader;
 import engine.geometry.VAO;
+import engine.geometry.Vertex;
+import engine.util.math.Vector2;
 import engine.util.math.Vector3;
 
 public final class Renderengine implements Runnable{
@@ -84,16 +88,38 @@ public final class Renderengine implements Runnable{
 		s.addUniformValue("vp", c.getVpMat());
 		s.addUniformValue("p", c.getProjection());
 		s.addUniformValue("v", c.getViewMatrix());
+//		Mesh m = new Mesh(new int[]{
+//				// Left bottom triangle
+//                0, 1, 2,
+//                // Right top triangle
+//                2, 3, 0
+//		}, new Vertex[]{
+//				new Vertex(new Vector3(-0.5f, 0.5f, 0f), 	new Vector3(0, 0, 1), new Vector2(0,0)),
+//				new Vertex(new Vector3(-0.5f, -0.5f, 00f), new Vector3(0, 0, 1), new Vector2(0,1)),
+//				new Vertex(new Vector3(0.5f, -0.5f, -00f), 	new Vector3(0, 0, 1), new Vector2(1,1)),
+//				new Vertex(new Vector3(0.5f, 0.5f,-0f   ), new Vector3(0, 0, 1), new Vector2(1,0))
+//		});
+//		System.out.println(m.getID());
+		Quader q = new Quader(new Vector3(0, 0, -4), new Vector3(1, 1, -5));
+		RenderbleObject obj = new RenderbleObject(new Vector3(0, 0, -5),new Vector3(0,0, 0),new Vector3(1, 1f, 1)) {
+			
+			@Override
+			public void prepare(Shader shader) {
+				// TODO Auto-generated method stub
+				
+			}
+		};
+//		obj.setMeshID(m.getID());
 		while(!w.shouldClose()){
 			w.clear();
 			render();
 			t.bind(0);
 			s.updateB();
-			v.bind();
-			v.drawE();
-			v.unbind();
+			for (Mesh mesh : meshMap.values()) {
+				mesh.render(s);
+			}
 			c.update();
-	
+			q.setRot(q.getRot().add(new Vector3(1, 0.5f, 0.25f)));
 			Shader.unbind();
 			w.swapBuffers();
 			w.pollEvents();

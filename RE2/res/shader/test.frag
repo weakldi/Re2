@@ -6,5 +6,6 @@ uniform sampler2D textureSampler;
 void main()
 {
     
-    o = texture2D(textureSampler,passUV);
+    o = vec4(1,0,1,1);
+    //o = texture2D(textureSampler,passUV);
 }

@@ -237,7 +237,20 @@ public class Matrix4x4 implements UniformValue{
 		return buffer;
 	}
 	
+	public Matrix4x4 scale(Vector3 scale) {
+		return scale(scale.x,scale.y,scale.z);
+	}
+
 	
+	public Matrix4x4 scale(float x,float y,float z){
+		Matrix4x4 scale = new Matrix4x4();
+		scale.data[0][0] = x;
+		scale.data[1][1] = y;
+		scale.data[2][2] = z;
+		scale.data[3][3] = 0;
+		mul(scale);
+		return this;
+	}
 	
 	public float[][] getData(){
 		return data;
@@ -257,5 +270,6 @@ public class Matrix4x4 implements UniformValue{
 	public void loadValueToUniform(int uniformID) {
 		glUniformMatrix4fv(uniformID, false, getFloatBuffer());
 	}
-	
+
+		
 }

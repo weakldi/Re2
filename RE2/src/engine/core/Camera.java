@@ -73,9 +73,7 @@ public class Camera {
 
 	public void update(){
 		viewMatrix.makeTransmat(deltaRot,up, forward, position);
-		System.out.println(vpMat);
 		Matrix4x4.mul(projection, viewMatrix, vpMat);
-		System.out.println(vpMat);
 		deltaRot.setNull();
 	}
 	
