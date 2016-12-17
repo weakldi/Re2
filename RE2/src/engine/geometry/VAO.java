@@ -3,6 +3,9 @@ package engine.geometry;
 
 import  static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.*;
+
+import engine.util.BufferUtil;
+
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL15.*;
 
@@ -42,7 +45,7 @@ public class VAO {
 			vbos[attrib] = glGenBuffers();
 			System.out.println(vbos[attrib]);
 			glBindBuffer(GL_ARRAY_BUFFER, vbos[attrib]);
-			glBufferData(GL_ARRAY_BUFFER, data, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, BufferUtil.createFilpedFloatbuffer(data), GL_STATIC_DRAW);
 			glVertexAttribPointer(attrib, size, GL_FLOAT, false, 0, 0L);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			unbind();
@@ -54,7 +57,7 @@ public class VAO {
 	public void addElementArray(int[] data){
 		elementArray = glGenBuffers();
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementArray);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, data, GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, BufferUtil.createFilpedIntbuffer(data), GL_STATIC_DRAW);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		count = data.length;
 	}

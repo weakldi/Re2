@@ -56,6 +56,7 @@ public class Shader {
 			System.out.println("L: " + l);
 			l = l.replaceAll("[\n\r]{1,}", "");
 			if(l.matches("\\s*uniform.*")){
+				l = l.replaceAll("\\s*uniform", "u");
 				String uName = l.split("\\s{1,}")[2].replaceAll(";", "");
 				System.out.println("Uniform " + uName);
 				uniformNames.put(uName,glGetUniformLocation(programID, uName));
@@ -71,7 +72,7 @@ public class Shader {
 	}
 	
 	public void updateB(){
-		bind();
+		glUseProgram(programID);
 		Set<Integer> keySet = uniforms.keySet();
 		for (Integer id : keySet) {
 			uniforms.get(id).loadValueToUniform(id);
@@ -81,6 +82,7 @@ public class Shader {
 	public void update(){
 		Set<Integer> keySet = uniforms.keySet();
 		for (Integer id : keySet) {
+			
 			uniforms.get(id).loadValueToUniform(id);
 		}
 	}

@@ -107,7 +107,7 @@ public class FBO{
 	
 	public static void bindWindowAsTarget(){
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glViewport(0, 0, Renderengine.getInstance().getW().getWIDTH(), Renderengine.getInstance().getW().getHEIGHT());
+//		glViewport(0, 0, Renderengine.getInstance().getW().getWIDTH(), Renderengine.getInstance().getW().getHEIGHT());
 	}
 	
 	public Texture getTexture(int i){

@@ -1,9 +1,12 @@
 package engine.core;
 
+import engine.util.BufferUtil;
 import engine.util.math.Matrix4x4;
 import engine.util.math.Vector3;
 
 import static org.lwjgl.opengl.GL20.*;
+
+import java.nio.FloatBuffer;
 
 public abstract class RenderbleObject {
 	private Vector3 pos;
@@ -26,7 +29,8 @@ public abstract class RenderbleObject {
 	
 	public final void render(Shader shader){
 		if(update)update();
-		glUniformMatrix4fv(shader.getUniforms().get("m"), false, transMat.getFloatBuffer());
+		FloatBuffer buffer = BufferUtil.createFilpedFloatbuffer(transMat.m);
+		glUniformMatrix4fv(shader.getUniforms().get("m"), true, buffer);
 	}
 	
 	public int getMeshID() {
@@ -49,15 +53,17 @@ public abstract class RenderbleObject {
 	}
 
 	public void update(){
-		Vector3 trueScale = new Vector3(scale.x, scale.y*Renderengine.getInstance().getW().getAspectRatio(), scale.z);
-		System.out.println(trueScale);
 		
-		Matrix4x4 translation = new Matrix4x4().setIdentity().translate(pos);
-		Matrix4x4 rotation = new Matrix4x4().setIdentity().rotate(rot);
-		Matrix4x4 scale = new Matrix4x4().setIdentity().scale(trueScale);
-		Matrix4x4.mul(scale,Matrix4x4.mul(translation, rotation) , transMat);
-		System.out.println(transMat);
-		update = false;
+//		System.out.println(trueScale);
+		
+//		Matrix4x4 translation = new Matrix4x4().setIdentity().translate(pos);
+//		Matrix4x4 rotation = new Matrix4x4().setIdentity().rotate(rot);
+//		Matrix4x4 scale = new Matrix4x4().setIdentity().scale(trueScale);
+//		Matrix4x4.mul(translation,rotation,transMat);
+//		transMat.scale(trueScale);
+		transMat.setIdentity().translate(pos).rotate(rot).scale(scale);
+//		System.out.println(transMat);
+		update = true;
 	}
 	
 	public Vector3 getPos() {

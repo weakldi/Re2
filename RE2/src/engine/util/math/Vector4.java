@@ -87,6 +87,12 @@ public class Vector4 implements UniformValue{
 	public void setZ(float z) {
 		this.z = z;
 	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return super.toString() + " [" + x + ", " + y + ", " + z + ", " + w + "]";
+	}
 
 	@Override
 	public void loadValueToUniform(int uniformID) {

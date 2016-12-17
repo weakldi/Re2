@@ -66,7 +66,7 @@ public class TextureData {
 			format = internalFormat = GL11.GL_RGBA;
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.exit(1);
+			
 		}
 	}
 

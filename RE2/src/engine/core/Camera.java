@@ -4,7 +4,7 @@ import engine.util.math.Matrix4x4;
 import engine.util.math.Vector3;
 
 public class Camera {
-	private Matrix4x4 	projection 	= new Matrix4x4().setProjection(100, 0, 45, 800, 800);
+	private Matrix4x4 	projection 	= new Matrix4x4().setProjection(100, 0.f, 800, 600, 50);
 	private Matrix4x4 	viewMatrix 	= new Matrix4x4().setIdentity();
 	private Matrix4x4	vpMat		= new Matrix4x4().setIdentity();
 	private Vector3		deltaRot;
@@ -15,10 +15,10 @@ public class Camera {
 	
 	public Camera() {
 		super();
-		projection 	= new Matrix4x4().setProjection(100, 0, 45, 800, 800);
+	
 		viewMatrix 	= new Matrix4x4().setIdentity();                      
 		position = new Vector3();                                                         
-		rotation = new Vector3();    
+		rotation = new Vector3(0,0,0);    
 		up = new Vector3(0, 1, 0);
 		forward = new Vector3(0, 0, 1);
 		deltaRot = new Vector3(0, 0, 0);
@@ -33,6 +33,7 @@ public class Camera {
 
 
 	public void setPosition(Vector3 position) {
+		update();
 		this.position = position;
 	}
 
@@ -65,16 +66,19 @@ public class Camera {
 	}
 
 	public void rotate(Vector3 rot){
-		deltaRot.y = -rot.x;
-		deltaRot.x = rot.y;
-		deltaRot.z = rot.z;
-		rotation.add(rotation);
+		rotation.add(rot);
+		rotation.x %= 360f;
+		rotation.y %= 360f;
+		rotation.z %= 360f;
 	}
 
 	public void update(){
-		viewMatrix.makeTransmat(deltaRot,up, forward, position);
+		viewMatrix.makeView(rotation,up, forward, position);
+//		viewMatrix.setIdentity().rotate(rotation).translate(position);
+//		System.out.println("viewMatrix: " + viewMatrix);
+
+		
 		Matrix4x4.mul(projection, viewMatrix, vpMat);
-		deltaRot.setNull();
 	}
 	
 	public Vector3 getForward() {

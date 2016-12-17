@@ -1,11 +1,16 @@
-#version 400
-in vec2 passUV;
-out vec4 o;
-uniform vec3 color; 
-uniform sampler2D textureSampler;
-void main()
-{
-    
-    o = vec4(1,0,1,1);
-    //o = texture2D(textureSampler,passUV);
+
+#version 330 core
+in vec2 pass_uv;
+in mat3 tbn;
+in vec3 position;
+in vec3 n;
+out vec4 diffuse;
+
+
+
+uniform sampler2D model_Matirial_Texture;
+
+void main(){
+	diffuse = vec4 (n,1);
+	
 }
