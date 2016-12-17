@@ -156,10 +156,7 @@ public class Matrix4x4 implements UniformValue{
 		Vector3 s = forward.cross(up);
 		Vector3 u = s.cross(forward);
 		Vector3 f = forward;
-//		System.out.println("S: " + s);
-//		System.out.println("U: " + u);
-//		System.out.println("F: " + f);
-//		Matrix4x4 translate = new Matrix4x4().setIdentity().translate(p);
+
 		m[0 ] =-s.x; m[4 ] =-s.y; m[8 ] =-s.z; m[12] = 0;
 		m[1 ] = u.x; m[5 ] = u.y; m[9 ] = u.z; m[13] = 0;
 		m[2 ] = f.x; m[6 ] = f.y; m[10] = f.z; m[14] = 0;
@@ -330,17 +327,8 @@ public class Matrix4x4 implements UniformValue{
 	public Matrix4x4 setProjection(float far,float near,float w,float h,float fov){
 		near = near < .001f ? .001f:near; //NEAR DARF NICHT ZU KLEIN SEIN!!!!!!!! 3 TAGE DEBUGGING ...
 		float aspectRatio = w/h;
-		float scaleX = (float) ((1f/tan(toRadians(fov/2f))));
-		float scaleY = scaleX*aspectRatio;
-		float len = far-near;
-//		
-//		m[0 ] = scaleX; m[1 ] = 0; 		m[2 ] = 0; 					m[3 ] = 0;
-//		m[4 ] = 0; 		m[5 ] = scaleY; m[6 ] = 0; 					m[7 ] = 0;
-//		m[8 ] = 0;		m[9 ] = 0; 		m[10] = -((far+near)/len); 	m[11] = -((2 * far * near) / len);
-//		m[12] = 0; 		m[13] = 0; 		m[14] = -1; 				m[15] = 0;
-//		
-		float rad = (float) toRadians(fov/2);
 		
+		float rad = (float) toRadians(fov/2);
 		float sin = (float) sin(rad), ctan =  (float) (cos(rad) / sin),dZ = far-near;
 		setIdentity();
 		m[0] = ctan / aspectRatio;
@@ -349,17 +337,7 @@ public class Matrix4x4 implements UniformValue{
 		m[11] = -2 * near*far / dZ;
 		m[14] = -1;
 		m[15] = 0;
-//
-//		__gluMakeIdentityf(matrix);
-//
-//		matrix.put(0 * 4 + 0, cotangent / aspect);
-//		matrix.put(1 * 4 + 1, cotangent);
-//		matrix.put(2 * 4 + 2, - (zFar + zNear) / deltaZ);
-//		matrix.put(2 * 4 + 3, -1);
-//		matrix.put(3 * 4 + 2, -2 * zNear * zFar / deltaZ);
-//		matrix.put(3 * 4 + 3, 0);
-//
-//		glMultMatrix(matrix);
+		
 		return this;
 	}
 	
@@ -381,10 +359,6 @@ public class Matrix4x4 implements UniformValue{
 		Matrix4x4 rot = new Matrix4x4();
 		rot.rotate(rotation.x,-rotation.y,rotation.z);		
 		Vector4 f_ = rot.mul(new Vector4(forward.x, forward.y, forward.z, 0));
-//		rot.setIdentity().rotate(0,0,rotation.z);		
-//		Vector4 u_ = rot.mul(new Vector4(up.x, up.y, up.z, 0));
-		
-//		makeView(new Vector3(u_.x, u_.z, u_.y), new Vector3(f_.x, f_.y, f_.z), position);
 		makeView(up, new Vector3(f_.x, f_.y, f_.z), position);
 		return this;
 	}

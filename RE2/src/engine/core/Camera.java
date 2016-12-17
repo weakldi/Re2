@@ -74,10 +74,6 @@ public class Camera {
 
 	public void update(){
 		viewMatrix.makeView(rotation,up, forward, position);
-//		viewMatrix.setIdentity().rotate(rotation).translate(position);
-//		System.out.println("viewMatrix: " + viewMatrix);
-
-		
 		Matrix4x4.mul(projection, viewMatrix, vpMat);
 	}
 	

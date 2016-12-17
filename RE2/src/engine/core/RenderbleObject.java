@@ -13,7 +13,7 @@ public abstract class RenderbleObject {
 	private Vector3 rot;
 	private Vector3 scale;
 	private Matrix4x4 transMat;
-	private boolean update = true;
+	protected boolean update = true;
 	private int meshID = -1;
 	
 	public RenderbleObject(Vector3 pos, Vector3 rot, Vector3 scale) {
@@ -26,9 +26,11 @@ public abstract class RenderbleObject {
 	}
 
 	public abstract void prepare(Shader shader);
+	public abstract void update();
 	
 	public final void render(Shader shader){
-		if(update)update();
+		if(update)
+			_update();
 		FloatBuffer buffer = BufferUtil.createFilpedFloatbuffer(transMat.m);
 		glUniformMatrix4fv(shader.getUniforms().get("m"), true, buffer);
 	}
@@ -52,18 +54,11 @@ public abstract class RenderbleObject {
 		return update;
 	}
 
-	public void update(){
-		
-//		System.out.println(trueScale);
-		
-//		Matrix4x4 translation = new Matrix4x4().setIdentity().translate(pos);
-//		Matrix4x4 rotation = new Matrix4x4().setIdentity().rotate(rot);
-//		Matrix4x4 scale = new Matrix4x4().setIdentity().scale(trueScale);
-//		Matrix4x4.mul(translation,rotation,transMat);
-//		transMat.scale(trueScale);
+	public void _update(){
+		update();
+		 
 		transMat.setIdentity().translate(pos).rotate(rot).scale(scale);
-//		System.out.println(transMat);
-		update = true;
+		update = false;
 	}
 	
 	public Vector3 getPos() {
@@ -90,7 +85,6 @@ public abstract class RenderbleObject {
 	public Matrix4x4 getTransMat() {
 		return transMat;
 	}
-	public void setTransMat(Matrix4x4 transMat) {
-		this.transMat = transMat;
-	}
+	
+	
 }

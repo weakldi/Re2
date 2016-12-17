@@ -34,6 +34,7 @@ public class Mesh {
 		float[] nomData = new float[data.length*3];
 		float[] uvData = new float[data.length*2];
 		for (int i = 0; i < data.length; i++) {
+			
 			posData[i*3+0] = data[i].getPos().x;
 			posData[i*3+1] = data[i].getPos().y;
 			posData[i*3+2] = data[i].getPos().z;

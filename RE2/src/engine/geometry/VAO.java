@@ -43,7 +43,6 @@ public class VAO {
 		if(vbos[attrib]==0){
 			bind();
 			vbos[attrib] = glGenBuffers();
-			System.out.println(vbos[attrib]);
 			glBindBuffer(GL_ARRAY_BUFFER, vbos[attrib]);
 			glBufferData(GL_ARRAY_BUFFER, BufferUtil.createFilpedFloatbuffer(data), GL_STATIC_DRAW);
 			glVertexAttribPointer(attrib, size, GL_FLOAT, false, 0, 0L);

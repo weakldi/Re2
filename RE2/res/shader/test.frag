@@ -11,6 +11,8 @@ out vec4 diffuse;
 uniform sampler2D model_Matirial_Texture;
 
 void main(){
+	vec3 sd = vec3(1,position.z,0);
+	sd = normalize(sd);
 	diffuse = vec4 (n,1);
 	
 }

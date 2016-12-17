@@ -1,25 +1,17 @@
 package engine.geometry;
 
-import engine.core.RenderbleObject;
 import engine.core.Renderengine;
 import engine.core.Shader;
 import engine.util.math.Vector2;
 import engine.util.math.Vector3;
 
-import static java.lang.Math.*;
 
-public class Quader extends RenderbleObject{
-	
-	//super(new Vector3(pos.x-dim.x/2.0f, pos.y-dim.y/2.0f, pos.z-dim.z/2.0f), new Vector3(pos.x+dim.x/2.0f, pos.y+dim.y/2.0f, pos.z+dim.z/2.0f));
-	
+public class Quader extends GeometryOBJ{
+	private int meshID = -1;	
+
 	public Quader(Vector3 pos,Vector3 dim) {
-		super(pos,
-				new Vector3(0, 0, 0),
-				dim);
-//		super(new Vector3(pos2.x+(pos1.x-pos2.x)/2, pos2.y+(pos1.y-pos2.y)/2, pos2.z+(pos1.z-pos2.z)/2), new Vector3(0, 0, 0), new Vector3(abs(pos1.x-pos2.x), abs(pos1.y-pos2.y), abs(pos1.z-pos2.z)));
-		width = getScale().x;
-		height = getScale().y;
-		lenght = getScale().z;
+		super(pos,new Vector3(0, 0, 0),dim);
+		
 		if(meshID==-1){
 			Vertex[] v = new Vertex[]{
 				//FrontFace
@@ -70,14 +62,10 @@ public class Quader extends RenderbleObject{
 			Renderengine.getInstance().getMeshes().get(meshID).getObjects().add(this);
 		}
 	}
-	
-	
-	private int meshID = -1;
-	private float 	width,
-					height,
-					lenght;
+		
 	@Override
 	public void prepare(Shader shader) {
 		
 	}
+	
 }

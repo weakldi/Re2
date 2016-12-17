@@ -15,7 +15,7 @@ out vec3 position;
 out vec3 n;
 void main(){
 	pass_uv = uv;
-	n = (m * vec4(normal,0)).xyz;
+	n = (vec4(normal,0)).xyz;
 	mat4 m_ = mat4( 1,0,0,-0,
 				    0,1,0,-0,
 				    0,0,1,0,

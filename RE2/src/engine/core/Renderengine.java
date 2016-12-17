@@ -3,6 +3,8 @@ package engine.core;
 import java.util.HashMap;
 import java.util.Set;
 
+import org.lwjgl.opengl.GLCapabilities;
+
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 
@@ -10,10 +12,12 @@ import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 //import org.lwjgl.opengl.GLUtil;
 
 import engine.geometry.Cube;
+import engine.geometry.GeometryOBJ;
 import engine.geometry.Mesh;
 import engine.geometry.Quader;
 import engine.geometry.VAO;
 import engine.geometry.Vertex;
+import engine.geometry.Zylinder;
 import engine.util.math.Matrix4x4;
 import engine.util.math.Vector2;
 import engine.util.math.Vector3;
@@ -49,50 +53,20 @@ public final class Renderengine implements Runnable{
 		this.w = w;
 		w.init();
 		w.createCapabilities();
-//		c = w.getCapabilities();
+		c = w.getCapabilities();
 		
 	}
 	
 	
 	public void render(Shader s){
-//		glEnable(GL_DEPTH_TEST);
-//		glDepthMask(true);
-		glBegin(GL_TRIANGLES);
-		new Matrix4x4().setIdentity().loadValueToUniform(s.getUniforms().get("m"));
-		glVertex3f(-1, -1, 	0);
-		glVertex3f(0, 1, 	0);
-		glVertex3f(1, -1, 	0);
-		glVertex3f(-1, -1, 		1);
-		glVertex3f(1, 1, 	1);
-		glVertex3f(1, -1, 	-1);
-		glEnd();
+		
 	}
 	
 	
 	public void run() {
 		
 		w.show();
-		VAO v = new VAO();
-		v.addDataStatic(0, 3, new float[]{
-				-0.5f, 0.5f, -10f,    // Left top         ID: 0
-                -0.5f, -0.5f, 10f,   // Left bottom      ID: 1
-                0.5f, -0.5f, 10f,    // Right bottom     ID: 2
-                0.5f, 0.5f,10f      // Right left       ID: 3
-		});
 		
-		v.addDataStatic(2, 2, new float[]{
-				0,0,
-				0,1,
-				1,1,
-				1,0
-		});
-
-		v.addElementArray(new int[]{
-				// Left bottom triangle
-                0, 1, 2,
-                // Right top triangle
-                2, 3, 0
-		});
 		Shader s = new Shader(FileLoader.loadFile("res/shader/test.vert"),FileLoader.loadFile("res/shader/test.frag"));
 		s.addUniformValue("color", new Vector3(1, 0.5f, 0.25f));
 		Camera c = new Camera();
@@ -106,39 +80,16 @@ public final class Renderengine implements Runnable{
 		s.addUniformValue("vp", c.getVpMat());
 		s.addUniformValue("p", c.getProjection());
 		s.addUniformValue("v", c.getViewMatrix());
-//		Mesh m = new Mesh(new int[]{
-//				// Left bottom triangle
-//              
-//                // Right top triangle
-//				0, 1, 2,
-//                3,4,5
-//                
-//		}, new Vertex[]{
-//				new Vertex(new Vector3(0f, 1f, 1), 	new Vector3(0, 0, 1), new Vector2(0,1)),
-//				new Vertex(new Vector3(-1f, -1f,-1), new Vector3(0, 0, 1), new Vector2(0,1)),
-//				new Vertex(new Vector3(1f, -1f, 1), 	new Vector3(0, 0, 1), new Vector2(0,1)),
-//				
-//				new Vertex(new Vector3(-1f, -1f, 0), 	new Vector3(1, 0, 0), new Vector2(0,1)),
-//				new Vertex(new Vector3(-1f, 1f,-2), new Vector3(1, 0, 0), new Vector2(0,1)),
-//				new Vertex(new Vector3(1f, -1f, 0), 	new Vector3(1, 0, 0), new Vector2(0,1)),
-//		});                                         
-//		
-//		System.out.println(m.getID());
-		Cube q = new Cube(new Vector3(0, 0, -4), 1);
-//		RenderbleObject obj = new RenderbleObject(new Vector3(0, 0, -10),new Vector3(0,0, 0),new Vector3(1, 1f, 1)) {
-//			
-//			@Override
-//			public void prepare(Shader shader) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//		};
+
+		GeometryOBJ q = new Zylinder(new Vector3(0, 0, -4), new Vector3(0,0,0),new Vector3(1, 1, 1));
+
+//		q.getDim().x = 10;
+//		q.getScale().x = 0.25f;
 		FBO.bindWindowAsTarget();
-//		obj.setMeshID(m.getID());
-//		Matrix4x4 m = new Matrix4x4().setIdentity();
+
 		while(!w.shouldClose()){
 			w.clear();
-//			render();
+
 			t.bind(0);
 			s.bind();
 			s.update();
@@ -146,12 +97,11 @@ public final class Renderengine implements Runnable{
 				mesh.render(s);
 			}
 			c.update();
-//			c.rotate(new Vector3(1, 0, 0));
-			q.setRot(q.getRot().add(new Vector3(1, .25f, 0.5f)));
-//			obj.getPos().z+=0.01f;
-//			System.out.println(obj.getPos());
+			
+			q.setRot(q.getRot().add(new Vector3(0, .25f, 0.f)));
+//			System.out.println(q.getTransMat());
 			Shader.unbind();
-//			vs.add(new Vector3(0,0,-0.01f));
+
 			w.swapBuffers();
 			w.pollEvents();
 		}
@@ -160,7 +110,6 @@ public final class Renderengine implements Runnable{
 			
 			finalize();
 		} catch (Throwable e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -173,7 +122,7 @@ public final class Renderengine implements Runnable{
 	public Window getW() {
 		return w;
 	}
-//	public GLCapabilities c;
+	public GLCapabilities c;
 	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();

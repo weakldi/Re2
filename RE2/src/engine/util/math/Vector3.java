@@ -50,17 +50,26 @@ public class Vector3 implements UniformValue{
 		this.z = z;
 	}
 
-	public void normailze(){
+	public Vector3 normailze(){
 		float len = length();
 		x /= len;
 		y /= len;
 		z /= len;
+		return this;
 	}
 	
-	public void scale(float len){
+	public Vector3 scale(float len){
 		x *= len;
 		y *= len;
 		z *= len;
+		return this;
+	}
+	
+	public Vector3 mulValues(Vector3 v){
+		x *= v.x;
+		y *= v.y;
+		z *= v.z;
+		return this;
 	}
 	
 	public float length() {
@@ -86,10 +95,11 @@ public class Vector3 implements UniformValue{
 		return this;
 	}
 	
-	public void sub(Vector3 b){
+	public Vector3 sub(Vector3 b){
 		x-=b.x;
 		y-=b.y;
 		z-=b.z;
+		return this;
 	}
 
 	@Override
