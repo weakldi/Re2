@@ -74,10 +74,7 @@ public class Zylinder extends GeometryOBJ {
 		res = res<5?5:res;
 		if(!meshTable.containsKey(res)){
 			genMesh(res);
-			System.out.println("gen");
 		}
-		res = res<5?5:res;
-		System.out.println(res);
 		Renderengine.getInstance().getMeshes().get(meshID).getObjects().remove(this);
 		meshID = meshTable.get(res);
 		Renderengine.getInstance().getMeshes().get(meshID).getObjects().add(this);
