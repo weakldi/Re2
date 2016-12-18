@@ -3,6 +3,15 @@ package engine.core;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL21.*;
+import static org.lwjgl.opengl.GL31.*;
+import static org.lwjgl.opengl.GL12.*;
+import static org.lwjgl.opengl.GL32.*;
+import static org.lwjgl.opengl.GL13.*;
+import static org.lwjgl.opengl.GL14.*;
+
 
 import java.nio.ByteBuffer;
 
@@ -25,29 +34,13 @@ public class Texture {
 	}
 
 	public void loadData(TextureData data){
-		this.data = data;
-		if(data.getData()!=null){
-			bind(0);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glTexImage2D(GL_TEXTURE_2D, 0, data.getInternalFormat(), data.getWidth(), data.getHeight(), 0, data.getFormat(), GL_UNSIGNED_BYTE, data.getData());
-			unbind();
-		}else{
-			textureID = getMissing().textureID;
-		}
-		
+		bind(0);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexImage2D(GL_TEXTURE_2D, 0, data.getInternalFormat(), data.getWidth(), data.getHeight(), 0, data.getFormat(), data.getDataType(), data.getData());
+		unbind();
 	}
 	
-	public TextureData getData() {
-		return data;
-	}
-
-
-	public void setData(TextureData data) {
-		loadData(data);
-	}
-
-
 	private int genTextureID(){
 		return glGenTextures();
 	}
@@ -60,6 +53,7 @@ public class Texture {
 	public void unbind(){
 		glBindTexture(GL_TEXTURE_2D, GL_NONE);
 	}
+	
 	private static Texture missing = null;
 	public static Texture getMissing(){
 		if(missing==null){

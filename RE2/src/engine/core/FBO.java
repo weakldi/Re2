@@ -1,5 +1,4 @@
 package engine.core;
-
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.*;
@@ -29,6 +28,18 @@ public class FBO{
 	private int depthTexture = -1;
 	private int[] drawBuffer;
 	private int width, height;
+	
+	public static FBO window = new FBO(0,0,new int[]{},new int[]{},new int[]{}){
+		@Override
+		protected void createFBO(int[] attachments) {
+			System.out.println(getTexureCount());
+		}
+		@Override
+		public void bind() {
+			bindWindowAsTarget();
+		}
+	};
+	
 	public FBO(int width,int height,int[] attachments,int[] formats,int[] internalFormats) {
 		textures = new Texture[attachments.length];
 		this.width = width;
@@ -41,7 +52,7 @@ public class FBO{
 		createFBO(attachments);
 		
 	}
-	private void createFBO(int[] attachments){
+	protected void createFBO(int[] attachments){
 		drawBuffer = new int[attachments.length];
 		for(int i = 0; i < attachments.length; i++){
 			if(attachments[i] == GL_DEPTH_ATTACHMENT){
@@ -107,7 +118,7 @@ public class FBO{
 	
 	public static void bindWindowAsTarget(){
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-//		glViewport(0, 0, Renderengine.getInstance().getW().getWIDTH(), Renderengine.getInstance().getW().getHEIGHT());
+		glViewport(0, 0, Renderengine.getInstance().getW().getWIDTH(), Renderengine.getInstance().getW().getHEIGHT());
 	}
 	
 	public Texture getTexture(int i){

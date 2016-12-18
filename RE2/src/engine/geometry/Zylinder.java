@@ -7,7 +7,6 @@ import engine.util.math.Vector2;
 import engine.util.math.Vector3;
 
 public class Zylinder extends GeometryOBJ {
-	private int meshID = -1;	
 	private static HashMap<Integer, Integer> meshTable = new HashMap<>();
 	public Zylinder(Vector3 pos, Vector3 rot, Vector3 dim) {
 		super(pos, rot, dim);

@@ -14,7 +14,7 @@ public abstract class RenderbleObject {
 	private Vector3 scale;
 	private Matrix4x4 transMat;
 	protected boolean update = true;
-	private int meshID = -1;
+	protected int meshID = -1;
 	
 	public RenderbleObject(Vector3 pos, Vector3 rot, Vector3 scale) {
 		super();

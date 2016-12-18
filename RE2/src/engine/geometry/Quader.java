@@ -7,7 +7,6 @@ import engine.util.math.Vector3;
 
 
 public class Quader extends GeometryOBJ{
-	private int meshID = -1;	
 
 	public Quader(Vector3 pos,Vector3 dim) {
 		super(pos,new Vector3(0, 0, 0),dim);

@@ -1,5 +1,5 @@
 package engine.core;
-
+import static org.lwjgl.opengl.GL11.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -20,12 +20,16 @@ public class TextureData {
 	private ByteBuffer data;
 	private int internalFormat;
 	private int format;
+	private int dataType = GL_UNSIGNED_BYTE;
 	
 	public TextureData(int width, int height, int internalFormat, int format) {
 		super();
 		this.width = width;
 		this.height = height;
 		this.internalFormat = internalFormat;
+		if(format == GL_DEPTH_COMPONENT){
+			dataType = GL_FLOAT;
+		}
 		this.format = format;
 		data = null;
 	}
@@ -34,7 +38,7 @@ public class TextureData {
 		this.width = width;
 		this.height = height;
 		this.data = data;
-		format = internalFormat = GL11.GL_RGBA;
+		format =GL_RGBA;internalFormat = GL11.GL_RGBA8;
 	}
 	
 	public TextureData(String file) {
@@ -63,7 +67,7 @@ public class TextureData {
             }
 
 			data.flip();
-			format = internalFormat = GL11.GL_RGBA;
+			format =GL_RGBA;internalFormat = GL11.GL_RGBA8;
 		} catch (IOException e) {
 			e.printStackTrace();
 			
@@ -103,6 +107,14 @@ public class TextureData {
 	 */
 	public int getFormat() {
 		return format;
+	}
+
+	public int getDataType() {
+		return dataType;
+	}
+	
+	public void setDataType(int t){
+		dataType = t;
 	}
 	
 	
