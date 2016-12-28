@@ -24,15 +24,15 @@ public class Quader extends GeometryOBJ{
 				new Vertex(new Vector3( 0.5f,  0.5f, -0.5f), new Vector3(0, 0, -1), new Vector2(0,0)),	 //6
 				new Vertex(new Vector3( 0.5f, -0.5f, -0.5f), new Vector3(0, 0, -1), new Vector2(0,1)),   //7
 				//Left                                                                                   //
-				new Vertex(new Vector3(-0.5f, -0.5f,-0.5f), new Vector3(1, 0, 0), new Vector2(1,1)),     //8
-				new Vertex(new Vector3(-0.5f, -0.5f, 0.5f), new Vector3(1, 0, 0), new Vector2(1,0)),     //9
-				new Vertex(new Vector3(-0.5f,  0.5f, 0.5f), new Vector3(1, 0, 0), new Vector2(0,0)),	 //10
-				new Vertex(new Vector3(-0.5f,  0.5f,-0.5f), new Vector3(1, 0, 0), new Vector2(0,1)),     //11
+				new Vertex(new Vector3(-0.5f, -0.5f,-0.5f), new Vector3(-1, 0, 0), new Vector2(1,1)),    //8
+				new Vertex(new Vector3(-0.5f, -0.5f, 0.5f), new Vector3(-1, 0, 0), new Vector2(1,0)),    //9
+				new Vertex(new Vector3(-0.5f,  0.5f, 0.5f), new Vector3(-1, 0, 0), new Vector2(0,0)),	 //10
+				new Vertex(new Vector3(-0.5f,  0.5f,-0.5f), new Vector3(-1, 0, 0), new Vector2(0,1)),    //11
 				//right                                                                                  //
-				new Vertex(new Vector3( 0.5f, -0.5f,-0.5f), new Vector3(-1, 0, 0), new Vector2(1,1)),    //12
-				new Vertex(new Vector3( 0.5f, -0.5f, 0.5f), new Vector3(-1, 0, 0), new Vector2(1,0)),    //13
-				new Vertex(new Vector3( 0.5f,  0.5f, 0.5f), new Vector3(-1, 0, 0), new Vector2(0,0)),	 //14
-				new Vertex(new Vector3( 0.5f,  0.5f,-0.5f), new Vector3(-1, 0, 0), new Vector2(0,1)),    //15
+				new Vertex(new Vector3( 0.5f, -0.5f,-0.5f), new Vector3( 1, 0, 0), new Vector2(1,1)),    //12
+				new Vertex(new Vector3( 0.5f, -0.5f, 0.5f), new Vector3( 1, 0, 0), new Vector2(1,0)),    //13
+				new Vertex(new Vector3( 0.5f,  0.5f, 0.5f), new Vector3( 1, 0, 0), new Vector2(0,0)),	 //14
+				new Vertex(new Vector3( 0.5f,  0.5f,-0.5f), new Vector3( 1, 0, 0), new Vector2(0,1)),    //15
 				//Up                                                                                     //
 				new Vertex(new Vector3(-0.5f,  0.5f,-0.5f), new Vector3(0, 1, 0), new Vector2(1,1)),     //16
 				new Vertex(new Vector3(-0.5f,  0.5f, 0.5f), new Vector3(0, 1, 0), new Vector2(1,0)),     //17

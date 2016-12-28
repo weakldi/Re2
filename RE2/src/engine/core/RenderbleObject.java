@@ -15,6 +15,7 @@ public abstract class RenderbleObject {
 	private Matrix4x4 transMat;
 	protected boolean update = true;
 	protected int meshID = -1;
+	protected Texture modleTexture;
 	
 	public RenderbleObject(Vector3 pos, Vector3 rot, Vector3 scale) {
 		super();
@@ -23,6 +24,15 @@ public abstract class RenderbleObject {
 		this.scale = scale;
 		
 		transMat = new Matrix4x4().setIdentity();
+		modleTexture = Renderengine.stdTexture;
+	}
+
+	public Texture getModleTexture() {
+		return modleTexture;
+	}
+
+	public void setModleTexture(Texture modleTexture) {
+		this.modleTexture = modleTexture;
 	}
 
 	public abstract void prepare(Shader shader);
@@ -33,6 +43,11 @@ public abstract class RenderbleObject {
 			_update();
 		FloatBuffer buffer = BufferUtil.createFilpedFloatbuffer(transMat.m);
 		glUniformMatrix4fv(shader.getUniforms().get("m"), true, buffer);
+		modleTexture.bind(0);
+	}
+	
+	public final void postRender(){
+		modleTexture.unbind();
 	}
 	
 	public int getMeshID() {

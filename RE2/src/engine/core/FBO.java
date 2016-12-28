@@ -29,16 +29,8 @@ public class FBO{
 	private int[] drawBuffer;
 	private int width, height;
 	
-	public static FBO window = new FBO(0,0,new int[]{},new int[]{},new int[]{}){
-		@Override
-		protected void createFBO(int[] attachments) {
-			System.out.println(getTexureCount());
-		}
-		@Override
-		public void bind() {
-			bindWindowAsTarget();
-		}
-	};
+	
+	public static FBO window;
 	
 	public FBO(int width,int height,int[] attachments,int[] formats,int[] internalFormats) {
 		textures = new Texture[attachments.length];
@@ -50,6 +42,8 @@ public class FBO{
 			textures[i].loadData(data);
 		}
 		createFBO(attachments);
+		
+		
 		
 	}
 	protected void createFBO(int[] attachments){
@@ -142,5 +136,18 @@ public class FBO{
 	}
 	public void clear() {
 		GL11.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	}
+	
+	public int getWidth() {
+		return width;
+	}
+	public void setWidth(int width) {
+		this.width = width;
+	}
+	public int getHeight() {
+		return height;
+	}
+	public void setHeight(int height) {
+		this.height = height;
 	}
 }

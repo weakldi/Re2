@@ -8,6 +8,7 @@ import org.lwjgl.opengl.GLCapabilities;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL21.*;
 import static org.lwjgl.opengl.GL31.*;
 import static org.lwjgl.opengl.GL12.*;
@@ -26,6 +27,9 @@ import engine.geometry.Quader;
 import engine.geometry.VAO;
 import engine.geometry.Vertex;
 import engine.geometry.Zylinder;
+import engine.light.DirLight;
+import engine.light.Light;
+import engine.light.PointLight;
 import engine.util.math.Matrix4x4;
 import engine.util.math.Vector2;
 import engine.util.math.Vector3;
@@ -49,17 +53,13 @@ public final class Renderengine implements Runnable{
 		return re.get(w);
 	}
 	
-	
+	private StaticPipeline pipeline;
 	
 	private Window w;
 	private HashMap<Integer, Mesh> meshMap = new HashMap<>();
-	private FBO renderBuffer;
-	private VAO screen;
+
 	private Camera cam;
-	
-	private Shader finalShader;
-	private Shader gBuffer;
-	Shader s;
+		
 	
 	private Renderengine(){
 		this(new Window());
@@ -70,6 +70,19 @@ public final class Renderengine implements Runnable{
 		w.init();
 		w.createCapabilities();
 		c = w.getCapabilities();
+		
+		FBO.window = new FBO(w.getWIDTH(),w.getHEIGHT(),new int[]{},new int[]{},new int[]{}){
+			@Override
+			protected void createFBO(int[] attachments) {
+				System.out.println(getTexureCount());
+			}
+			@Override
+			public void bind() {
+				bindWindowAsTarget();
+			}
+		};
+		
+		
 		if(stdTexture==null){
 			stdTexture = new Texture();
 			ByteBuffer b = ByteBuffer.allocate(16);
@@ -102,81 +115,18 @@ public final class Renderengine implements Runnable{
 	}
 	
 	public void render(){
-		renderSolid3D(renderBuffer,cam);
-		finalShader.bind();
-		screen.bind();
-		renderBuffer.getTexture(0).bind(0);
-		renderBuffer.getTexture(1).bind(1);
-		renderBuffer.getTexture(2).bind(2);
-		renderBuffer.getTexture(3).bind(3);
-		screen.drawE();
-		renderBuffer.getTexture(0).unbind();
-		screen.unbind();
-		Shader.unbind();
+		pipeline.render3D(meshMap, cam);
 	}
 	
-	public void render(FBO target){
-		renderSolid3D(renderBuffer,cam);
-		
-//		screen.bind();
-//		renderBuffer.getTexture(0).bind(0);
-//		screen.drawE();
-//		renderBuffer.getTexture(0).unbind();
-//		screen.unbind();
-	}
 	
-	public void renderSolid3D(FBO target, Camera cam){
-		target.bind();
-		target.clear();
-		s.bind();
-		s.update();
-		for (Mesh mesh : meshMap.values()) {
-			mesh.render(s);
-		}
-		cam.update();
-		
-		
-//		System.out.println(q.getTransMat());
-		Shader.unbind();
-		target.unbind();
-		
-		
-	}
 	
 	
 	public void run() {
 		
 		w.show();
-		renderBuffer = new FBO(w.getWIDTH(),w.getHEIGHT(),
-				new int[]{GL_COLOR_ATTACHMENT0	,GL_COLOR_ATTACHMENT1	,GL_COLOR_ATTACHMENT2	,GL_DEPTH_ATTACHMENT},
-				new int[]{GL_RGBA				,GL_RGBA				,GL_RGBA				,GL_DEPTH_COMPONENT},
-				new int[]{GL_RGBA16,			GL_RGBA32F				,GL_RGBA32F				,GL_DEPTH_COMPONENT24}
-				);
-		screen = new VAO();
-		
-		screen.addDataStatic(0, 2, new float[]{
-				-1,-1,
-				1,-1,
-				1,1,
-				-1,1
-				
-		});
-//		screen.addDataStatic(1, 2, new float[]{
-//				0,0,
-//				1,0,
-//				1,1,
-//				0,1
-//		});
-		screen.addElementArray(new int[]{
-				0,1,2,
-				2,3,0
-		});
-		finalShader = new Shader(FileLoader.loadFile("res/shader/p2.vert"),FileLoader.loadFile("res/shader/p2a.frag"));
-		finalShader.bind();
-		glUniform1ui(finalShader.getUniforms().get("diffuse"), 0);
-		Shader.unbind();
-		s = new Shader(FileLoader.loadFile("res/shader/test.vert"),FileLoader.loadFile("res/shader/test.frag"));
-		s.addUniformValue("color", new Vector3(1, 0.5f, 0.25f));
+		pipeline = new StaticPipeline(FBO.window);
+		DirLight l = new DirLight(new Vector3(1,1,1),new Vector3(0,-1,-1));
+		PointLight pl = new PointLight(new Vector3(1, 0.5f, 0.25f), new Vector3(0, 0, 0));
 		cam = new Camera();
 		
 				
@@ -185,37 +135,23 @@ public final class Renderengine implements Runnable{
 		Vector3 vs = cam.getPosition();
 		Texture t = new Texture();
 		t.loadData(new TextureData(System.getProperty("user.home") + "/the_talos_principle_circle_icon_by_vitald2-d8dsgkr.png"));
-		s.addUniformValue("vp", cam.getVpMat());
-		s.addUniformValue("p", cam.getProjection());
-		s.addUniformValue("v", cam.getViewMatrix());
-
-		GeometryOBJ q = new Cone(new Vector3(0, 0, -4), new Vector3(0,0,0),new Vector3(1, 1, 1));
-
+		
+		GeometryOBJ q = new Cube(new Vector3(0,0,-4),1);
+//		GeometryOBJ q = new Cone(new Vector3(0, 0, -4), new Vector3(0, 0, 0), new Vector3(1, 1, 1));
+		q.setModleTexture(t);
 //		q.getDim().x = 10;
 //		q.getScale().x = 0.25f;
 		FBO.bindWindowAsTarget();
 
 		while(!w.shouldClose()){
-			w.clear();
-			
 			render();
-			
-//			t.bind(0);
-//			s.bind();
-//			s.update();
-//			for (Mesh mesh : meshMap.values()) {
-//				mesh.render(s);
-//			}
-//			cam.update();
-			
-			q.setRot(q.getRot().add(new Vector3(0, .25f, 0.f)));
-//			System.out.println(q.getTransMat());
-//			Shader.unbind();
-			q.setRot(q.getRot().add(new Vector3(0, .25f, 0.f)));
+			cam.update();
+			q.setRot(q.getRot().add(new Vector3(0, .5f, 0.0f)));
+
+			q.setRot(q.getRot().add(new Vector3(0.5f, .0f, .0f)));
 			w.swapBuffers();
 			w.pollEvents();
 		}
-		System.out.println(s.getUniforms());
 		try {
 			
 			finalize();
@@ -247,5 +183,9 @@ public final class Renderengine implements Runnable{
 	
 	public HashMap<Integer, Mesh> getMeshes(){
 		return meshMap;
+	}
+	
+	public void addLight(Light light){
+		pipeline.addLight(light);
 	}
 }

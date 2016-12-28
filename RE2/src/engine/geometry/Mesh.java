@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import engine.core.RenderbleObject;
 import engine.core.Renderengine;
 import engine.core.Shader;
+import engine.core.Texture;
 import engine.util.math.Vector2;
 import engine.util.math.Vector3;
 
@@ -61,8 +62,10 @@ public class Mesh {
 			renderbleObject.prepare(shader);
 			renderbleObject.render(shader);
 			vertexArrayObject.drawE();
+			renderbleObject.postRender();
 		}
 		vertexArrayObject.unbind();
+		
 	}
 
 	public Vertex[] getData() {

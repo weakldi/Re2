@@ -102,4 +102,23 @@ public class Shader {
 	public int getProgramID(){
 		return programID;
 	}
+	
+	public void update(Camera cam){
+		Set<String> keySet = uniformNames.keySet();
+		for (String id : keySet) {
+			switch (id) {
+			case "v":
+				cam.getViewMatrix().loadValueToUniform(uniformNames.get(id));
+				break;
+			case "p":
+				cam.getProjection().loadValueToUniform(uniformNames.get(id));
+				break;
+			case "vp":
+				cam.getVpMat().loadValueToUniform(uniformNames.get(id));
+				break;
+			default:
+				break;
+			}
+		}
+	}
 }

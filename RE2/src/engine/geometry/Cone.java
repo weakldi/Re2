@@ -33,8 +33,8 @@ public class Cone extends GeometryOBJ
 		}
 		Vertex[] vert = new Vertex[resolution*2 + 2];
 		
-		vert[resolution] = new Vertex(new Vector3(0f, 0, 0), new Vector3(1f, 0, 0),new Vector2(1,01));
-		vert[resolution*2+1] = new Vertex(new Vector3(-1f, 0, 0), new Vector3(-1f, 0, 0),new Vector2(1,01));
+		vert[resolution] = new Vertex(new Vector3(0f, 0, 0), new Vector3(-1f, 0, 0),new Vector2(1,01));
+		vert[resolution*2+1] = new Vertex(new Vector3(-1f, 0, 0), new Vector3(1f, 0, 0),new Vector2(1,01));
 		for(int i = 0; i < resolution; i++){
 			vert[i] = new Vertex(new Vector3(0,circalPoints[i*2],circalPoints[i*2+1]),new Vector3(1,0,0),new Vector2(0,0));
 			vert[resolution+i+1] = new Vertex(new Vector3(0,circalPoints[i*2],circalPoints[i*2+1]),new Vector3(0,circalPoints[i*2],circalPoints[i*2+1]),new Vector2(0,0));

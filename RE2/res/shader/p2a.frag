@@ -3,9 +3,9 @@ in vec2 p_uv;
 
 out vec4 color;
 
-uniform  sampler2D diffuse;
-
+uniform sampler2D diffuse;
+uniform vec3 lc;
 
 void main(){
-	color = vec4(texture2D(diffuse,p_uv).rgb,1);
+	color = vec4(lc * texture2D(diffuse,p_uv).rgb,1);
 }
